@@ -4,14 +4,98 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Deadline Tracker</title>
-    <script src="react.production.min.js"></script>
-    <script src="react-dom.production.min.js"></script>
-    <script src="babel.min.js"></script>
-    <link href="tailwind.min.css" rel="stylesheet" />
-    <script src="lucide.min.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        margin: 0;
+        padding: 20px;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      h1 {
+        text-align: center;
+        color: #4a5568;
+      }
+      .current-time {
+        text-align: center;
+        font-size: 1.2em;
+        margin-bottom: 20px;
+      }
+      .add-deadline {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+      }
+      .add-deadline input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #e2e8f0;
+        border-radius: 4px;
+      }
+      .add-deadline button {
+        width: 100%;
+        padding: 10px;
+        background-color: #4299e1;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .deadlines {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+      }
+      .deadline-card {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      .deadline-card h3 {
+        margin-top: 0;
+        color: #2d3748;
+      }
+      .deadline-card .countdown {
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #4a5568;
+      }
+      .deadline-card .actions {
+        margin-top: 10px;
+      }
+      .deadline-card .actions button {
+        padding: 5px 10px;
+        margin-right: 5px;
+        background-color: #4299e1;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .deadline-card .actions button.delete {
+        background-color: #f56565;
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
-    <script type="text/babel" src="app.js"></script>
+    <div class="container">
+      <h1>Deadline Tracker</h1>
+      <div id="current-time" class="current-time"></div>
+      <div class="add-deadline">
+        <input type="text" id="deadline-title" placeholder="Deadline Title" />
+        <input type="date" id="deadline-date" />
+        <input type="time" id="deadline-time" />
+        <button id="add-deadline">Add Deadline</button>
+      </div>
+      <div id="deadlines" class="deadlines"></div>
+    </div>
+    <script src="app.js"></script>
   </body>
 </html>

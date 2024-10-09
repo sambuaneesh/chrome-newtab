@@ -1,251 +1,107 @@
-const { useState, useEffect } = React;
-const { Clock, Calendar, Edit, Trash } = lucide;
+let deadlines = [];
 
-const DeadlineTracker = () => {
-  const [deadlines, setDeadlines] = useState([]);
-  const [newDeadline, setNewDeadline] = useState({
-    title: "",
-    date: "",
-    time: "",
+function updateCurrentTime() {
+  const currentTimeElement = document.getElementById("current-time");
+  currentTimeElement.textContent = new Date().toLocaleString();
+}
+
+function addDeadline() {
+  const title = document.getElementById("deadline-title").value;
+  const date = document.getElementById("deadline-date").value;
+  const time = document.getElementById("deadline-time").value || "00:00";
+
+  if (title && date) {
+    const deadline = {
+      id: Date.now(),
+      title,
+      date: new Date(`${date}T${time}`).toISOString(),
+    };
+    deadlines.push(deadline);
+    saveDeadlines();
+    renderDeadlines();
+    clearInputs();
+  }
+}
+
+function deleteDeadline(id) {
+  deadlines = deadlines.filter((d) => d.id !== id);
+  saveDeadlines();
+  renderDeadlines();
+}
+
+function editDeadline(id) {
+  const deadline = deadlines.find((d) => d.id === id);
+  if (deadline) {
+    document.getElementById("deadline-title").value = deadline.title;
+    const dateObj = new Date(deadline.date);
+    document.getElementById("deadline-date").value = dateObj
+      .toISOString()
+      .split("T")[0];
+    document.getElementById("deadline-time").value = dateObj
+      .toTimeString()
+      .slice(0, 5);
+    deleteDeadline(id);
+  }
+}
+
+function clearInputs() {
+  document.getElementById("deadline-title").value = "";
+  document.getElementById("deadline-date").value = "";
+  document.getElementById("deadline-time").value = "";
+}
+
+function saveDeadlines() {
+  chrome.storage.sync.set({ deadlines });
+}
+
+function loadDeadlines() {
+  chrome.storage.sync.get(["deadlines"], (result) => {
+    if (result.deadlines) {
+      deadlines = result.deadlines;
+      renderDeadlines();
+    }
   });
-  const [editingDeadline, setEditingDeadline] = useState(null);
-  const [currentDateTime, setCurrentDateTime] = useState(new Date());
+}
 
-  useEffect(() => {
-    // Load deadlines from Chrome storage
-    chrome.storage.sync.get(["deadlines"], (result) => {
-      if (result.deadlines) {
-        setDeadlines(
-          result.deadlines.map((d) => ({ ...d, date: new Date(d.date) }))
-        );
-      }
-    });
+function formatTimeLeft(deadline) {
+  const diff = new Date(deadline.date) - new Date();
+  if (diff <= 0) return "Deadline passed";
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+  return `${days}d ${hours}h ${minutes}m ${seconds}s`;
+}
 
-    const timer = setInterval(() => {
-      setCurrentDateTime(new Date());
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
-
-  useEffect(() => {
-    // Save deadlines to Chrome storage whenever they change
-    chrome.storage.sync.set({
-      deadlines: deadlines.map((d) => ({ ...d, date: d.date.toISOString() })),
-    });
-  }, [deadlines]);
-
-  const addDeadline = () => {
-    if (newDeadline.title && newDeadline.date) {
-      const deadlineDate = new Date(
-        `${newDeadline.date}T${newDeadline.time || "00:00"}`
-      );
-      setDeadlines([
-        ...deadlines,
-        { ...newDeadline, id: Date.now(), date: deadlineDate },
-      ]);
-      setNewDeadline({ title: "", date: "", time: "" });
-    }
-  };
-
-  const updateDeadline = () => {
-    if (editingDeadline) {
-      const updatedDeadlines = deadlines.map((d) =>
-        d.id === editingDeadline.id
-          ? {
-              ...editingDeadline,
-              date: new Date(
-                `${editingDeadline.date}T${editingDeadline.time || "00:00"}`
-              ),
-            }
-          : d
-      );
-      setDeadlines(updatedDeadlines);
-      setEditingDeadline(null);
-    }
-  };
-
-  const deleteDeadline = (id) => {
-    setDeadlines(deadlines.filter((d) => d.id !== id));
-  };
-
-  const formatTimeLeft = (deadline) => {
-    const diff = Math.max(
-      0,
-      Math.floor((deadline.date - currentDateTime) / 1000)
-    );
-    const days = Math.floor(diff / (3600 * 24));
-    const hours = Math.floor((diff % (3600 * 24)) / 3600);
-    const minutes = Math.floor((diff % 3600) / 60);
-    const seconds = diff % 60;
-    return `${days}d ${hours}h ${minutes}m ${seconds}s`;
-  };
-
-  const formatDate = (date) => {
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
-
-  const formatTime = (date) => {
-    return date.toLocaleTimeString("en-US", {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-100 to-blue-200 p-8">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold text-center mb-8 text-purple-800">
-          Deadline Tracker
-        </h1>
-
-        <div className="text-center mb-8">
-          <p className="text-2xl font-semibold text-blue-700">
-            {currentDateTime.toLocaleString()}
-          </p>
-        </div>
-
-        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-          <h2 className="text-xl font-semibold mb-4">Add New Deadline</h2>
-          <div className="flex flex-wrap gap-4 mb-4">
-            <input
-              className="flex-1 p-2 border rounded"
-              value={newDeadline.title}
-              onChange={(e) =>
-                setNewDeadline({ ...newDeadline, title: e.target.value })
-              }
-              placeholder="Enter deadline title"
-            />
-            <input
-              className="flex-1 p-2 border rounded"
-              type="date"
-              value={newDeadline.date}
-              onChange={(e) =>
-                setNewDeadline({ ...newDeadline, date: e.target.value })
-              }
-            />
-            <input
-              className="flex-1 p-2 border rounded"
-              type="time"
-              value={newDeadline.time}
-              onChange={(e) =>
-                setNewDeadline({ ...newDeadline, time: e.target.value })
-              }
-            />
-          </div>
-          <button
-            onClick={addDeadline}
-            className="w-full bg-purple-600 text-white p-2 rounded hover:bg-purple-700 transition-colors"
-          >
-            Add Deadline
-          </button>
-        </div>
-
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {deadlines
-            .sort((a, b) => a.date - b.date)
-            .map((deadline) => (
-              <div
-                key={deadline.id}
-                className="bg-white rounded-lg shadow-md overflow-hidden"
-              >
-                <div className="bg-gradient-to-r from-purple-500 to-blue-500 p-4">
-                  <h3 className="text-lg font-semibold text-white mb-2">
-                    {deadline.title}
-                  </h3>
-                  <div className="flex justify-end space-x-2">
-                    <button
-                      onClick={() => setEditingDeadline(deadline)}
-                      className="text-white hover:text-purple-200"
-                    >
-                      <Edit size={16} />
-                    </button>
-                    <button
-                      onClick={() => deleteDeadline(deadline.id)}
-                      className="text-white hover:text-red-200"
-                    >
-                      <Trash size={16} />
-                    </button>
-                  </div>
-                </div>
-                <div className="p-4">
-                  <div className="flex items-center mb-2">
-                    <Calendar className="mr-2 text-purple-500" size={16} />
-                    <span>{formatDate(deadline.date)}</span>
-                  </div>
-                  <div className="flex items-center mb-2">
-                    <Clock className="mr-2 text-blue-500" size={16} />
-                    <span>{formatTime(deadline.date)}</span>
-                  </div>
-                  <div className="text-xl font-bold text-purple-700">
-                    {formatTimeLeft(deadline)}
-                  </div>
-                </div>
-              </div>
-            ))}
-        </div>
-
-        {editingDeadline && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-            <div className="bg-white p-6 rounded-lg w-96">
-              <h2 className="text-xl font-semibold mb-4">Edit Deadline</h2>
-              <input
-                className="w-full p-2 border rounded mb-2"
-                value={editingDeadline.title}
-                onChange={(e) =>
-                  setEditingDeadline({
-                    ...editingDeadline,
-                    title: e.target.value,
-                  })
-                }
-              />
-              <input
-                className="w-full p-2 border rounded mb-2"
-                type="date"
-                value={editingDeadline.date.toISOString().split("T")[0]}
-                onChange={(e) =>
-                  setEditingDeadline({
-                    ...editingDeadline,
-                    date: new Date(e.target.value),
-                  })
-                }
-              />
-              <input
-                className="w-full p-2 border rounded mb-4"
-                type="time"
-                value={editingDeadline.date.toTimeString().slice(0, 5)}
-                onChange={(e) => {
-                  const [hours, minutes] = e.target.value.split(":");
-                  const newDate = new Date(editingDeadline.date);
-                  newDate.setHours(hours);
-                  newDate.setMinutes(minutes);
-                  setEditingDeadline({ ...editingDeadline, date: newDate });
-                }}
-              />
-              <div className="flex justify-end space-x-2">
-                <button
-                  onClick={() => setEditingDeadline(null)}
-                  className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={updateDeadline}
-                  className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
-                >
-                  Save
-                </button>
-              </div>
+function renderDeadlines() {
+  const deadlinesContainer = document.getElementById("deadlines");
+  deadlinesContainer.innerHTML = "";
+  deadlines
+    .sort((a, b) => new Date(a.date) - new Date(b.date))
+    .forEach((deadline) => {
+      const deadlineElement = document.createElement("div");
+      deadlineElement.className = "deadline-card";
+      deadlineElement.innerHTML = `
+            <h3>${deadline.title}</h3>
+            <p>Due: ${new Date(deadline.date).toLocaleString()}</p>
+            <p class="countdown">${formatTimeLeft(deadline)}</p>
+            <div class="actions">
+                <button onclick="editDeadline(${deadline.id})">Edit</button>
+                <button class="delete" onclick="deleteDeadline(${
+                  deadline.id
+                })">Delete</button>
             </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
+        `;
+      deadlinesContainer.appendChild(deadlineElement);
+    });
+}
 
-ReactDOM.render(<DeadlineTracker />, document.getElementById("root"));
+document.getElementById("add-deadline").addEventListener("click", addDeadline);
+
+setInterval(() => {
+  updateCurrentTime();
+  renderDeadlines();
+}, 1000);
+
+loadDeadlines();
+updateCurrentTime();
