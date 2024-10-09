@@ -40,7 +40,7 @@ function editDeadline(id) {
     document.getElementById("deadline-time").value = dateObj
       .toTimeString()
       .slice(0, 5);
-    deleteDeadline(id);
+    deleteDeadline(id); // Remove the deadline after loading its data
   }
 }
 
@@ -86,15 +86,28 @@ function renderDeadlines() {
             <p>Due: ${new Date(deadline.date).toLocaleString()}</p>
             <p class="countdown">${formatTimeLeft(deadline)}</p>
             <div class="actions">
-                <button onclick="editDeadline(${deadline.id})">Edit</button>
-                <button class="delete" onclick="deleteDeadline(${
+                <button class="edit-button" data-id="${
                   deadline.id
-                })">Delete</button>
+                }">Edit</button>
+                <button class="delete-button" data-id="${
+                  deadline.id
+                }">Delete</button>
             </div>
         `;
       deadlinesContainer.appendChild(deadlineElement);
     });
 }
+
+// Event delegation for edit and delete buttons
+document.getElementById("deadlines").addEventListener("click", (event) => {
+  if (event.target.classList.contains("edit-button")) {
+    const id = parseInt(event.target.getAttribute("data-id"));
+    editDeadline(id);
+  } else if (event.target.classList.contains("delete-button")) {
+    const id = parseInt(event.target.getAttribute("data-id"));
+    deleteDeadline(id);
+  }
+});
 
 document.getElementById("add-deadline").addEventListener("click", addDeadline);
 

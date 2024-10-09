@@ -7,11 +7,8 @@
     <style>
       body {
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; /* Updated font */
-        background: linear-gradient(
-          135deg,
-          #e0eafc 0%,
-          #cfdef3 100%
-        ); /* Softer gradient */
+        background: #121212; /* Dark background */
+        color: #e0e0e0; /* Light text color */
         margin: 0;
         padding: 20px;
       }
@@ -20,12 +17,12 @@
         margin: 0 auto;
         padding: 20px; /* Added padding */
         border-radius: 10px; /* Rounded corners */
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Deeper shadow */
-        background-color: white; /* White background for container */
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Deeper shadow */
+        background-color: #1e1e1e; /* Darker container background */
       }
       h1 {
         text-align: center;
-        color: #2c3e50; /* Darker title color */
+        color: #ffffff; /* White title color */
         font-size: 2.5em; /* Increased font size */
         margin-bottom: 20px; /* Spacing below title */
       }
@@ -33,31 +30,33 @@
         text-align: center;
         font-size: 1.5em; /* Increased font size */
         margin-bottom: 20px;
-        color: #34495e; /* Updated color */
+        color: #b0bec5; /* Lighter color for current time */
       }
       .add-deadline {
-        background: #f9f9f9; /* Light background for input area */
+        background: #2c2c2c; /* Dark background for input area */
         padding: 30px; /* Increased padding */
         border-radius: 8px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
         margin-bottom: 20px;
       }
       .add-deadline input {
         width: 100%;
         padding: 12px; /* Increased padding */
         margin-bottom: 15px; /* Increased margin */
-        border: 1px solid #bdc3c7; /* Softer border color */
+        border: 1px solid #444; /* Softer border color */
         border-radius: 4px;
+        background-color: #3a3a3a; /* Dark input background */
+        color: #ffffff; /* White text in inputs */
         transition: border-color 0.3s; /* Transition effect */
       }
       .add-deadline input:focus {
-        border-color: #3498db; /* Focus border color */
+        border-color: #1e88e5; /* Focus border color */
         outline: none; /* Remove outline */
       }
       .add-deadline button {
         width: 100%;
         padding: 12px; /* Increased padding */
-        background-color: #3498db; /* Updated button color */
+        background-color: #1e88e5; /* Updated button color */
         color: white;
         border: none;
         border-radius: 4px;
@@ -66,7 +65,7 @@
         transition: background-color 0.3s; /* Transition effect */
       }
       .add-deadline button:hover {
-        background-color: #2980b9; /* Darker on hover */
+        background-color: #1565c0; /* Darker on hover */
       }
       .deadlines {
         display: grid;
@@ -74,10 +73,10 @@
         gap: 20px;
       }
       .deadline-card {
-        background: #ffffff; /* White background for cards */
+        background: #2c2c2c; /* Dark background for cards */
         padding: 20px;
         border-radius: 8px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
         transition: transform 0.3s; /* Transition effect */
       }
       .deadline-card:hover {
@@ -85,12 +84,12 @@
       }
       .deadline-card h3 {
         margin-top: 0;
-        color: #2c3e50; /* Darker color for headings */
+        color: #ffffff; /* White color for headings */
       }
       .deadline-card .countdown {
         font-size: 1.5em; /* Increased font size */
         font-weight: bold;
-        color: #e74c3c; /* Updated color for countdown */
+        color: #ffab00; /* Updated color for countdown */
       }
       .deadline-card .actions {
         margin-top: 10px;
@@ -98,7 +97,7 @@
       .deadline-card .actions button {
         padding: 6px 12px; /* Increased padding */
         margin-right: 5px;
-        background-color: #3498db; /* Updated button color */
+        background-color: #1e88e5; /* Updated button color */
         color: white;
         border: none;
         border-radius: 4px;
@@ -106,13 +105,13 @@
         transition: background-color 0.3s; /* Transition effect */
       }
       .deadline-card .actions button:hover {
-        background-color: #2980b9; /* Darker on hover */
+        background-color: #1565c0; /* Darker on hover */
       }
       .deadline-card .actions button.delete {
-        background-color: #e74c3c; /* Updated delete button color */
+        background-color: #e53935; /* Updated delete button color */
       }
       .deadline-card .actions button.delete:hover {
-        background-color: #c0392b; /* Darker on hover */
+        background-color: #c62828; /* Darker on hover */
       }
     </style>
   </head>
