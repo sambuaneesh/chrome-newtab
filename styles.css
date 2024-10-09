@@ -120,12 +120,13 @@ button {
   border-radius: var(--radius);
   cursor: pointer;
   font-size: 1rem;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s; /* Added transform transition */
 }
 
 button:hover {
   background-color: var(--accent);
   color: var(--accent-foreground);
+  transform: translateY(-2px); /* Slight lift effect on hover */
 }
 
 .bookmarks {
@@ -142,11 +143,12 @@ button:hover {
   color: var(--accent-foreground);
   text-decoration: none;
   border-radius: var(--radius);
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s; /* Added transform transition */
 }
 
 .bookmark:hover {
   background-color: var(--secondary);
+  transform: translateY(-2px); /* Slight lift effect on hover */
 }
 
 .add-deadline,
@@ -161,34 +163,96 @@ button:hover {
   list-style-type: none;
 }
 
-.deadline-card,
-.todo-item {
-  background-color: var(--accent);
-  padding: 1rem;
+.deadline-card {
+  display: flex; /* Use flexbox for layout */
+  justify-content: space-between; /* Space between elements */
+  align-items: center; /* Center items vertically */
+  background-color: var(--muted); /* Dark background for the card */
+  padding: 1.5rem; /* Increased padding for better spacing */
   border-radius: var(--radius);
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem; /* More margin between cards */
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 
-.deadline-card h3,
-.todo-item span {
-  margin-bottom: 0.5rem;
+.deadline-card:hover {
+  transform: scale(1.05); /* Slightly larger scaling on hover */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
 }
 
-.countdown {
+.deadline-info {
+  flex: 2; /* Allow the info section to take more space */
+  display: flex;
+  flex-direction: column; /* Stack title and details vertically */
+  gap: 0.5rem; /* Space between title and details */
+}
+
+.deadline-title {
+  font-size: 1.2rem;
   font-weight: bold;
   color: var(--primary);
 }
 
+.deadline-date {
+  font-size: 1rem;
+  color: var(--muted-foreground);
+}
+
+.countdown {
+  font-weight: bold;
+  font-size: 1.4rem;
+  color: rgba(255, 76, 76, 0.8);
+  background-color: hsl(216, 34%, 17%);
+  padding: 0.75rem;
+  border-radius: var(--radius);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  animation: pulse 1s infinite; /* Added a subtle pulse animation */
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.03);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 .actions {
   display: flex;
+  flex-direction: column; /* Stack action buttons vertically */
   gap: 0.5rem;
-  margin-top: 0.5rem;
+}
+
+.actions button {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  background-color: var(--accent);
+  color: var(--accent-foreground);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.actions button:hover {
+  background-color: var(--secondary);
 }
 
 .todo-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0.75rem; /* Added padding for better spacing */
+  border-radius: var(--radius);
+  background-color: var(--muted); /* Background color for better contrast */
+  transition: background-color 0.3s; /* Smooth background transition */
+}
+
+.todo-item:hover {
+  background-color: var(--secondary); /* Change background on hover */
 }
 
 .todo-item button {
