@@ -3,130 +3,73 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>New Tab</title>
-    <style>
-      body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; /* Updated font */
-        background: #121212; /* Dark background */
-        color: #e0e0e0; /* Light text color */
-        margin: 0;
-        padding: 20px;
-      }
-      .container {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 20px; /* Added padding */
-        border-radius: 10px; /* Rounded corners */
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Deeper shadow */
-        background-color: #1e1e1e; /* Darker container background */
-      }
-      h1 {
-        text-align: center;
-        color: #ffffff; /* White title color */
-        font-size: 2.5em; /* Increased font size */
-        margin-bottom: 20px; /* Spacing below title */
-      }
-      .current-time {
-        text-align: center;
-        font-size: 1.5em; /* Increased font size */
-        margin-bottom: 20px;
-        color: #b0bec5; /* Lighter color for current time */
-      }
-      .add-deadline {
-        background: #2c2c2c; /* Dark background for input area */
-        padding: 30px; /* Increased padding */
-        border-radius: 8px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-        margin-bottom: 20px;
-      }
-      .add-deadline input {
-        width: 100%;
-        padding: 12px; /* Increased padding */
-        margin-bottom: 15px; /* Increased margin */
-        border: 1px solid #444; /* Softer border color */
-        border-radius: 4px;
-        background-color: #3a3a3a; /* Dark input background */
-        color: #ffffff; /* White text in inputs */
-        transition: border-color 0.3s; /* Transition effect */
-      }
-      .add-deadline input:focus {
-        border-color: #1e88e5; /* Focus border color */
-        outline: none; /* Remove outline */
-      }
-      .add-deadline button {
-        width: 100%;
-        padding: 12px; /* Increased padding */
-        background-color: #1e88e5; /* Updated button color */
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 1.1em; /* Increased font size */
-        transition: background-color 0.3s; /* Transition effect */
-      }
-      .add-deadline button:hover {
-        background-color: #1565c0; /* Darker on hover */
-      }
-      .deadlines {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: 20px;
-      }
-      .deadline-card {
-        background: #2c2c2c; /* Dark background for cards */
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-        transition: transform 0.3s; /* Transition effect */
-      }
-      .deadline-card:hover {
-        transform: translateY(-5px); /* Lift effect on hover */
-      }
-      .deadline-card h3 {
-        margin-top: 0;
-        color: #ffffff; /* White color for headings */
-      }
-      .deadline-card .countdown {
-        font-size: 1.5em; /* Increased font size */
-        font-weight: bold;
-        color: #ffab00; /* Updated color for countdown */
-      }
-      .deadline-card .actions {
-        margin-top: 10px;
-      }
-      .deadline-card .actions button {
-        padding: 6px 12px; /* Increased padding */
-        margin-right: 5px;
-        background-color: #1e88e5; /* Updated button color */
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background-color 0.3s; /* Transition effect */
-      }
-      .deadline-card .actions button:hover {
-        background-color: #1565c0; /* Darker on hover */
-      }
-      .deadline-card .actions button.delete {
-        background-color: #e53935; /* Updated delete button color */
-      }
-      .deadline-card .actions button.delete:hover {
-        background-color: #c62828; /* Darker on hover */
-      }
-    </style>
+    <title>New Tab - Personal Dashboard</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <div class="container">
-      <h1>Welcome Aneesh!</h1>
-      <div id="current-time" class="current-time"></div>
-      <div class="add-deadline">
-        <input type="text" id="deadline-title" placeholder="Deadline Title" />
-        <input type="date" id="deadline-date" />
-        <input type="time" id="deadline-time" value="23:59" />
-        <!-- Set default time to 11:59 PM -->
-        <button id="add-deadline">Add Deadline</button>
-      </div>
-      <div id="deadlines" class="deadlines"></div>
+      <header>
+        <h1 id="welcome-message">Welcome, Aneesh</h1>
+        <div id="current-time" class="current-time"></div>
+        <div id="current-date" class="date"></div>
+      </header>
+
+      <main>
+        <section class="deadlines-section">
+          <h2>Deadlines</h2>
+          <div class="add-deadline">
+            <input
+              type="text"
+              id="deadline-title"
+              placeholder="Deadline Title"
+            />
+            <input type="date" id="deadline-date" />
+            <input type="time" id="deadline-time" value="23:59" />
+            <button id="add-deadline">Add Deadline</button>
+          </div>
+          <div id="deadlines" class="deadlines"></div>
+        </section>
+
+        <div class="right-section">
+          <section class="todo-section">
+            <h2>To-Do List</h2>
+            <div class="add-todo">
+              <input
+                type="text"
+                id="todo-input"
+                placeholder="Add a new task..."
+              />
+              <button id="add-todo">Add Task</button>
+            </div>
+            <ul id="todo-list" class="todo-list"></ul>
+          </section>
+
+          <section class="bookmarks-section">
+            <h2>Quick Links</h2>
+            <div class="bookmarks">
+              <a href="https://www.google.com" class="bookmark"
+                ><i class="fab fa-google"></i> Google</a
+              >
+              <a href="https://www.github.com" class="bookmark"
+                ><i class="fab fa-github"></i> GitHub</a
+              >
+              <a href="https://www.linkedin.com" class="bookmark"
+                ><i class="fab fa-linkedin"></i> LinkedIn</a
+              >
+              <a href="https://www.youtube.com" class="bookmark"
+                ><i class="fab fa-youtube"></i> YouTube</a
+              >
+              <button id="add-bookmark" class="bookmark">
+                <i class="fas fa-plus"></i> Add
+              </button>
+            </div>
+          </section>
+        </div>
+      </main>
     </div>
     <script src="app.js"></script>
   </body>
