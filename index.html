@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Deadline Tracker</title>
+    <title>New Tab</title>
     <style>
       body {
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; /* Updated font */
@@ -117,12 +117,13 @@
   </head>
   <body>
     <div class="container">
-      <h1>Deadline Tracker</h1>
+      <h1>Welcome Aneesh!</h1>
       <div id="current-time" class="current-time"></div>
       <div class="add-deadline">
         <input type="text" id="deadline-title" placeholder="Deadline Title" />
         <input type="date" id="deadline-date" />
-        <input type="time" id="deadline-time" />
+        <input type="time" id="deadline-time" value="23:59" />
+        <!-- Set default time to 11:59 PM -->
         <button id="add-deadline">Add Deadline</button>
       </div>
       <div id="deadlines" class="deadlines"></div>
