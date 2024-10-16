@@ -56,11 +56,11 @@ function saveBookmarks() {
   const bookmarks = Array.from(
     document.querySelectorAll(".bookmark:not(#add-bookmark)")
   ).map((b) => ({ name: b.textContent.trim(), url: b.href }));
-  chrome.storage.sync.set({ bookmarks });
+  browser.storage.sync.set({ bookmarks });
 }
 
 function loadBookmarks() {
-  chrome.storage.sync.get(["bookmarks"], (result) => {
+  browser.storage.sync.get(["bookmarks"]).then((result) => {
     if (result.bookmarks) {
       result.bookmarks.forEach((bookmark) => {
         const bookmarkElement = document.createElement("a");
@@ -130,11 +130,11 @@ function clearDeadlineInputs() {
 }
 
 function saveDeadlines() {
-  chrome.storage.sync.set({ deadlines });
+  browser.storage.sync.set({ deadlines });
 }
 
 function loadDeadlines() {
-  chrome.storage.sync.get(["deadlines"], (result) => {
+  browser.storage.sync.get(["deadlines"]).then((result) => {
     if (result.deadlines) {
       deadlines = result.deadlines;
       renderDeadlines();
@@ -224,11 +224,11 @@ function deleteTodo(id) {
 }
 
 function saveTodos() {
-  chrome.storage.sync.set({ todos });
+  browser.storage.sync.set({ todos });
 }
 
 function loadTodos() {
-  chrome.storage.sync.get(["todos"], (result) => {
+  browser.storage.sync.get(["todos"]).then((result) => {
     if (result.todos) {
       todos = result.todos;
       renderTodos();
